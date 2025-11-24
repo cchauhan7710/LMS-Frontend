@@ -7,7 +7,7 @@ export function useAuthUser() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://localhost:5000/auth/me", {
+    fetch("https://lms-backend-fezb.onrender.com/auth/me", {
       headers: { Authorization: `Bearer ${token}` }
     })
       .then(res => res.json())

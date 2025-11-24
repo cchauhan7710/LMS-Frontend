@@ -11,7 +11,7 @@ const SupportPage = ({ navigate }) => {
     const message = e.target.message.value;
 
     try {
-      const res = await axios.post("http://localhost:5000/support/contact", {
+      const res = await axios.post("https://lms-backend-fezb.onrender.com/support/contact", {
         name,
         email,
         message,

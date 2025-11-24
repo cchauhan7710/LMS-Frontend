@@ -9,7 +9,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/courses/all");
+        const res = await axios.get("https://lms-backend-fezb.onrender.com/courses/all");
         if (Array.isArray(res.data)) {
           setCourses(res.data);
         } else {

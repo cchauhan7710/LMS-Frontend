@@ -31,7 +31,7 @@ export default function CreateCoursePage() {
     const formData = new FormData();
     formData.append("video", file);
 
-    const res = await axios.post("http://localhost:5000/upload/video", formData, {
+    const res = await axios.post("https://lms-backend-fezb.onrender.com/upload/video", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
@@ -49,7 +49,7 @@ export default function CreateCoursePage() {
     const formData = new FormData();
     formData.append("thumbnail", thumbnail);
 
-    const res = await axios.post("http://localhost:5000/upload/image", formData, {
+    const res = await axios.post("https://lms-backend-fezb.onrender.com/upload/image", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
@@ -61,7 +61,7 @@ export default function CreateCoursePage() {
     try {
       const thumbnailUrl = await uploadThumbnail();
 
-      const res = await axios.post("http://localhost:5000/courses/create", {
+      const res = await axios.post("https://lms-backend-fezb.onrender.com/courses/create", {
         title,
         price: Number(price),
         category,

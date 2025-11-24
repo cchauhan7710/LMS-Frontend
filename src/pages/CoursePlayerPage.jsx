@@ -16,7 +16,7 @@ export default function CoursePlayerPage() {
 
   /* FETCH COURSE */
   useEffect(() => {
-    axios.get(`http://localhost:5000/courses/${id}`).then((res) => {
+    axios.get(`https://lms-backend-fezb.onrender.com/courses/${id}`).then((res) => {
       setCourse(res.data);
 
       const saved = localStorage.getItem(`progress_${res.data._id}`);

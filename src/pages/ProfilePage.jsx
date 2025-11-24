@@ -15,7 +15,7 @@ const ProfilePage = ({ navigate }) => {
     }
 
     axios
-      .get("http://localhost:5000/auth/me", {
+      .get("https://lms-backend-fezb.onrender.com/auth/me", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

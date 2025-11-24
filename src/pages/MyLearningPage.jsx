@@ -18,7 +18,7 @@ export default function MyLearningPage() {
       }
 
       try {
-        const res = await axios.get("http://localhost:5000/auth/me", {
+        const res = await axios.get("https://lms-backend-fezb.onrender.com/auth/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

@@ -15,7 +15,7 @@ export default function AdminLoginPage() {
     try {
       // 🚀 Correct ADMIN login route
       const res = await axios.post(
-        "http://localhost:5000/auth/admin/login",
+        "https://lms-backend-fezb.onrender.com/auth/admin/login",
         { email, password }
       );
 

@@ -5,14 +5,14 @@ export default function ManageUsersPage() {
   const [users, setUsers] = useState([]);
 
   const loadUsers = () => {
-    axios.get("http://localhost:5000/auth/all").then((res) => {
+    axios.get("https://lms-backend-fezb.onrender.com/auth/all").then((res) => {
       setUsers(res.data.users);
     });
   };
 
   const deleteUser = async (id) => {
     if (!window.confirm("Delete this user?")) return;
-    await axios.delete(`http://localhost:5000/auth/${id}`);
+    await axios.delete(`https://lms-backend-fezb.onrender.com/auth/${id}`);
     loadUsers();
   };
 

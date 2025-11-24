@@ -29,7 +29,7 @@ export default function PaymentPage() {
       // Loop through each course and mark it purchased
       for (const course of cart) {
         await axios.post(
-          `http://localhost:5000/courses/purchase/${course._id}`,
+          `https://lms-backend-fezb.onrender.com/courses/purchase/${course._id}`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` },

@@ -13,7 +13,7 @@ export default function ModuleBuilder({ courseId }) {
 
   // 📌 Load course
   const loadCourse = () => {
-    axios.get(`http://localhost:5000/courses/${courseId}`).then((res) => {
+    axios.get(`https://lms-backend-fezb.onrender.com/courses/${courseId}`).then((res) => {
       setCourse(res.data);
     });
   };
@@ -28,7 +28,7 @@ export default function ModuleBuilder({ courseId }) {
   const addModule = async () => {
     if (!moduleName.trim()) return alert("Module name required!");
 
-    await axios.post(`http://localhost:5000/courses/${courseId}/module`, {
+    await axios.post(`https://lms-backend-fezb.onrender.com/courses/${courseId}/module`, {
       title: moduleName,
       lessons: [],
     });
@@ -43,7 +43,7 @@ export default function ModuleBuilder({ courseId }) {
     if (!window.confirm("Delete this entire module?")) return;
 
     await axios.delete(
-      `http://localhost:5000/courses/${courseId}/module/${mIndex}`
+      `https://lms-backend-fezb.onrender.com/courses/${courseId}/module/${mIndex}`
     );
 
     setSelectedModule(null);
@@ -57,7 +57,7 @@ export default function ModuleBuilder({ courseId }) {
     if (!videoUrl.trim()) return alert("Lesson video URL required!");
 
     await axios.post(
-      `http://localhost:5000/courses/${courseId}/module/${selectedModule}/lesson`,
+      `https://lms-backend-fezb.onrender.com/courses/${courseId}/module/${selectedModule}/lesson`,
       { title, videoUrl, description }
     );
 
@@ -74,7 +74,7 @@ export default function ModuleBuilder({ courseId }) {
     if (!window.confirm("Delete this lesson?")) return;
 
     await axios.delete(
-      `http://localhost:5000/courses/${courseId}/module/${selectedModule}/lesson/${lIndex}`
+      `https://lms-backend-fezb.onrender.com/courses/${courseId}/module/${selectedModule}/lesson/${lIndex}`
     );
 
     loadCourse();

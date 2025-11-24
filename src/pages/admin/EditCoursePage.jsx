@@ -19,7 +19,7 @@ export default function EditCoursePage() {
 
     setSaving(true);
     try {
-      const res = await axios.put(`http://localhost:5000/courses/${id}`, {
+      const res = await axios.put(`https://lms-backend-fezb.onrender.com/courses/${id}`, {
         modules,
       });
 

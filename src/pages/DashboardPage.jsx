@@ -24,13 +24,13 @@ export default function DashboardPage() {
         if (!token) return navigate("/auth?mode=login");
 
         // Get user
-        const userRes = await axios.get("http://localhost:5000/auth/me", {
+        const userRes = await axios.get("https://lms-backend-fezb.onrender.com/auth/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (userRes.data.success) setUser(userRes.data.user);
 
         // Get purchased courses
-        const courseRes = await axios.get("http://localhost:5000/courses/my-learning", {
+        const courseRes = await axios.get("https://lms-backend-fezb.onrender.com/courses/my-learning", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (courseRes.data.success) setPurchasedCourses(courseRes.data.courses);

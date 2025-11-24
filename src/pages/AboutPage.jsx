@@ -151,7 +151,7 @@ const AboutPage = ({ handleBack, history }) => {
 
                 try {
                   const res = await axios.post(
-                    "http://localhost:5000/support/contact",
+                    "https://lms-backend-fezb.onrender.com/support/contact",
                     { name, email, message }
                   );
 

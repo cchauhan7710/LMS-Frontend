@@ -21,7 +21,7 @@ const AuthPage = () => {
 
     if (!email) return alert("Enter email first");
 
-    const res = await fetch("http://localhost:5000/auth/send-otp", {
+    const res = await fetch("https://lms-backend-fezb.onrender.com/auth/send-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email }),
@@ -43,7 +43,7 @@ const AuthPage = () => {
   const verifyOtp = async () => {
     const email = document.getElementById("email").value;
 
-    const res = await fetch("http://localhost:5000/auth/verify-otp", {
+    const res = await fetch("https://lms-backend-fezb.onrender.com/auth/verify-otp", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, otp }),
@@ -73,7 +73,7 @@ const AuthPage = () => {
     if (mode === "signup") {
       if (!verified) return alert("Please verify your email first!");
 
-      const registerRes = await fetch("http://localhost:5000/auth/register", {
+      const registerRes = await fetch("https://lms-backend-fezb.onrender.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
@@ -85,7 +85,7 @@ const AuthPage = () => {
     }
 
     /* LOGIN FLOW */
-    const loginRes = await fetch("http://localhost:5000/auth/login", {
+    const loginRes = await fetch("https://lms-backend-fezb.onrender.com/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
@@ -96,7 +96,7 @@ const AuthPage = () => {
 
     localStorage.setItem("token", loginData.token);
 
-    const meRes = await fetch("http://localhost:5000/auth/me", {
+    const meRes = await fetch("https://lms-backend-fezb.onrender.com/auth/me", {
       headers: { Authorization: "Bearer " + loginData.token },
     });
 

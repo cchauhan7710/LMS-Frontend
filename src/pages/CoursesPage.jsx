@@ -22,7 +22,7 @@ const CoursesPage = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/courses/all").then(res => {
+    axios.get("https://lms-backend-fezb.onrender.com/courses/all").then(res => {
       setCourses(res.data);
     });
   }, []);

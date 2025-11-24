@@ -8,7 +8,7 @@ export default function ManageCoursesPage() {
 
   const loadCourses = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/courses/all");
+      const res = await axios.get("https://lms-backend-fezb.onrender.com/courses/all");
       setCourses(res.data);
     } catch (err) {
       console.error("Error loading courses:", err);
@@ -21,13 +21,13 @@ export default function ManageCoursesPage() {
 
   const deleteCourse = async (id) => {
     if (!window.confirm("Delete this course?")) return;
-    await axios.delete(`http://localhost:5000/courses/${id}`);
+    await axios.delete(`https://lms-backend-fezb.onrender.com/courses/${id}`);
     loadCourses();
   };
 
   const togglePublish = async (id) => {
     try {
-      await axios.patch(`http://localhost:5000/courses/${id}/publish`);
+      await axios.patch(`https://lms-backend-fezb.onrender.com/courses/${id}/publish`);
       loadCourses();
     } catch (err) {
       console.error("Error toggling publish:", err);
