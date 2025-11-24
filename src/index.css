@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* :root, .dark {
+  --primary: hsl(var(--primary-500));
+} */
