@@ -18,13 +18,16 @@ const TestimonialCard = ({ quote, name, title, avatar }) => {
         <div className="flex items-center">
           <img
             className="
-              w-14 h-14 rounded-full mr-4 object-cover
-              border-2 border-transparent hover:border-orange-500
+              w-16 h-16 rounded-full mr-4 object-cover
+              border-4 border-white dark:border-gray-700
+              shadow-md
               transition-all duration-300
+              hover:shadow-orange-400/40 hover:border-orange-500
             "
             src={avatar}
             alt={name}
           />
+
           <div>
             <p className="font-semibold text-gray-900 dark:text-white text-base">
               {name}

@@ -29,26 +29,27 @@ const LandingPage = () => {
 const testimonials = [
   {
     quote:
-      "This platform completely changed how I approach business growth. The strategies are practical, data-driven and easy to apply in real life.",
+      "This platform completely changed how I approach business growth. The strategies are practical and easy to apply.",
     name: "Priya Sharma",
     title: "Business Growth Consultant",
-    avatar: "https://randomuser.me/api/portraits/women/75.jpg",
+    avatar: "/testimonials/img3.png",
   },
   {
     quote:
-      "The AI in Business course helped me automate processes and make smarter decisions. It’s a must-have skill for the future.",
-    name: "Rajesh Kumar",
+      "The AI in Business course helped me automate processes and make smarter decisions.",
+    name: "Kulwinder Singh",
     title: "AI & Automation Specialist",
-    avatar: "https://randomuser.me/api/portraits/men/82.jpg",
+    avatar: "/testimonials/img2.jpg",
   },
   {
     quote:
-      "Running a business comes with challenges, but this platform gave me clarity and the tools to overcome them in a structured way.",
-    name: "Anjali Mehta",
+      "This platform gave me clarity and the tools to overcome business challenges.",
+    name: "Sandeep Mehta",
     title: "Business Strategy Manager",
-    avatar: "https://randomuser.me/api/portraits/women/67.jpg",
+    avatar: "/testimonials/img1.png",
   },
 ];
+
 
 
   return (
