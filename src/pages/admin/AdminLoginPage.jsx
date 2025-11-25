@@ -13,16 +13,13 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      // 🚀 Correct ADMIN login route
       const res = await axios.post(
         "https://lms-backend-fezb.onrender.com/auth/admin/login",
         { email, password }
       );
 
       if (res.data.success) {
-        // Save token correctly
         localStorage.setItem("adminToken", res.data.token);
-
         alert("Admin login successful!");
         navigate("/admin/dashboard");
       } else {
@@ -37,37 +34,54 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
-      <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-3xl font-bold mb-6 text-center">Admin Login</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
+      {/* Container */}
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 transition">
+        
+        {/* Title */}
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-6 text-center text-gray-900 dark:text-white">
+          Admin Login
+        </h1>
 
         <form onSubmit={handleLogin} className="space-y-5">
+          {/* Email Field */}
           <div>
-            <label>Email</label>
+            <label className="block text-gray-700 dark:text-gray-300 mb-1 font-medium">
+              Email
+            </label>
             <input
               type="email"
-              className="w-full border p-3 rounded-md"
+              className="w-full border border-gray-300 dark:border-gray-700 p-3 rounded-lg bg-gray-50 dark:bg-gray-700 
+                         text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="admin@example.com"
               required
             />
           </div>
 
+          {/* Password Field */}
           <div>
-            <label>Password</label>
+            <label className="block text-gray-700 dark:text-gray-300 mb-1 font-medium">
+              Password
+            </label>
             <input
               type="password"
-              className="w-full border p-3 rounded-md"
+              className="w-full border border-gray-300 dark:border-gray-700 p-3 rounded-lg bg-gray-50 dark:bg-gray-700 
+                         text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="••••••••"
               required
             />
           </div>
 
+          {/* Login Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-md"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 rounded-lg 
+                       text-lg font-semibold shadow-md transition"
           >
             {loading ? "Logging in..." : "Login"}
           </button>

@@ -5,9 +5,9 @@ export default function ManageUsersPage() {
   const [users, setUsers] = useState([]);
 
   const loadUsers = () => {
-    axios.get("https://lms-backend-fezb.onrender.com/auth/all").then((res) => {
-      setUsers(res.data.users);
-    });
+    axios
+      .get("https://lms-backend-fezb.onrender.com/auth/all")
+      .then((res) => setUsers(res.data.users));
   };
 
   const deleteUser = async (id) => {
@@ -21,24 +21,29 @@ export default function ManageUsersPage() {
   }, []);
 
   return (
-    <div className="p-10 min-h-screen bg-gray-50 dark:bg-gray-900 transition">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 md:px-10 py-10 transition">
+      {/* HEADER */}
+      <h1 className="text-3xl md:text-4xl font-extrabold mb-8 text-gray-900 dark:text-white">
         Manage Users
       </h1>
 
-      <div className="space-y-4 max-w-3xl">
+      {/* USER LIST */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl">
         {users.map((u) => (
           <div
             key={u._id}
-            className="flex justify-between items-center p-5 rounded-xl
-                       bg-white dark:bg-gray-800 shadow border border-gray-200 dark:border-gray-700"
+            className="p-5 rounded-xl bg-white dark:bg-gray-800 shadow 
+                       border border-gray-200 dark:border-gray-700 
+                       hover:shadow-lg hover:-translate-y-1 
+                       transition flex flex-col justify-between"
           >
             {/* USER INFO */}
-            <div>
-              <div className="text-lg font-bold text-gray-900 dark:text-white">
+            <div className="mb-4">
+              <div className="text-xl font-bold text-gray-900 dark:text-white truncate">
                 {u.name}
               </div>
-              <div className="text-gray-600 dark:text-gray-400 text-sm">
+
+              <div className="text-gray-600 dark:text-gray-400 text-sm break-all mt-1">
                 {u.email}
               </div>
             </div>
@@ -46,8 +51,9 @@ export default function ManageUsersPage() {
             {/* DELETE BUTTON */}
             <button
               onClick={() => deleteUser(u._id)}
-              className="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 
-                         text-white font-medium shadow"
+              className="w-full bg-red-600 hover:bg-red-700 
+                         text-white py-2 rounded-lg 
+                         font-medium shadow transition"
             >
               Delete
             </button>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function ModuleBuilder({ courseId }) {
@@ -11,34 +11,34 @@ export default function ModuleBuilder({ courseId }) {
   const [videoUrl, setVideoUrl] = useState("");
   const [description, setDescription] = useState("");
 
-  // 📌 Load course
+  // Load Course
   const loadCourse = () => {
-    axios.get(`https://lms-backend-fezb.onrender.com/courses/${courseId}`).then((res) => {
-      setCourse(res.data);
-    });
+    axios
+      .get(`https://lms-backend-fezb.onrender.com/courses/${courseId}`)
+      .then((res) => setCourse(res.data));
   };
 
   useEffect(() => {
     loadCourse();
   }, [courseId]);
 
-  if (!course) return <div className="text-white">Loading...</div>;
+  if (!course)
+    return <div className="text-center text-gray-500 py-5">Loading...</div>;
 
-  // ➕ Add Module
+  // Add Module
   const addModule = async () => {
     if (!moduleName.trim()) return alert("Module name required!");
 
-    await axios.post(`https://lms-backend-fezb.onrender.com/courses/${courseId}/module`, {
-      title: moduleName,
-      lessons: [],
-    });
+    await axios.post(
+      `https://lms-backend-fezb.onrender.com/courses/${courseId}/module`,
+      { title: moduleName, lessons: [] }
+    );
 
     setModuleName("");
     loadCourse();
-    alert("Module Added ✔");
   };
 
-  // 🗑 Delete Module
+  // Delete Module
   const deleteModule = async (mIndex) => {
     if (!window.confirm("Delete this entire module?")) return;
 
@@ -48,13 +48,35 @@ export default function ModuleBuilder({ courseId }) {
 
     setSelectedModule(null);
     loadCourse();
-    alert("Module Deleted ❌");
   };
 
-  // ➕ Add Lesson
+  // Upload Video
+  const uploadVideo = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const form = new FormData();
+    form.append("video", file);
+
+    try {
+      const res = await axios.post(
+        "https://lms-backend-fezb.onrender.com/upload/video",
+        form,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      setVideoUrl(res.data.url);
+      alert("Video Uploaded ✔");
+    } catch (err) {
+      console.error(err);
+      alert("Upload failed ❌");
+    }
+  };
+
+  // Add Lesson
   const addLesson = async () => {
     if (!title.trim()) return alert("Lesson title required!");
-    if (!videoUrl.trim()) return alert("Lesson video URL required!");
+    if (!videoUrl.trim()) return alert("Upload video first!");
 
     await axios.post(
       `https://lms-backend-fezb.onrender.com/courses/${courseId}/module/${selectedModule}/lesson`,
@@ -64,12 +86,10 @@ export default function ModuleBuilder({ courseId }) {
     setTitle("");
     setVideoUrl("");
     setDescription("");
-
     loadCourse();
-    alert("Lesson Added ✔");
   };
 
-  // 🗑 Delete Lesson
+  // Delete Lesson
   const deleteLesson = async (lIndex) => {
     if (!window.confirm("Delete this lesson?")) return;
 
@@ -78,20 +98,19 @@ export default function ModuleBuilder({ courseId }) {
     );
 
     loadCourse();
-    alert("Lesson Deleted ❌");
   };
 
   return (
-    <div className="mt-10 bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
+    <div className="mt-10 bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
 
       {/* Course Title */}
-      <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
+      <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center sm:text-left">
         Editing Course:{" "}
         <span className="text-orange-500">{course.title}</span>
       </h2>
 
       {/* Add Module */}
-      <div className="flex mb-6 gap-3">
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <input
           value={moduleName}
           onChange={(e) => setModuleName(e.target.value)}
@@ -100,7 +119,7 @@ export default function ModuleBuilder({ courseId }) {
         />
         <button
           onClick={addModule}
-          className="bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-semibold text-white"
+          className="bg-orange-600 hover:bg-orange-700 px-6 py-3 rounded-lg font-semibold text-white w-full sm:w-auto"
         >
           + Add Module
         </button>
@@ -111,12 +130,11 @@ export default function ModuleBuilder({ courseId }) {
         {course.modules.map((m, index) => (
           <div
             key={index}
-            className={`p-4 rounded-lg flex justify-between items-center cursor-pointer transition 
-              ${
-                selectedModule === index
-                  ? "bg-orange-600 text-white"
-                  : "bg-gray-100 dark:bg-gray-700"
-              }`}
+            className={`p-4 rounded-lg flex justify-between items-center cursor-pointer transition ${
+              selectedModule === index
+                ? "bg-orange-600 text-white"
+                : "bg-gray-100 dark:bg-gray-700"
+            }`}
             onClick={() => setSelectedModule(index)}
           >
             <span className="font-medium">{m.title}</span>
@@ -137,8 +155,7 @@ export default function ModuleBuilder({ courseId }) {
       {/* Lessons Section */}
       {selectedModule !== null && (
         <div className="bg-gray-100 dark:bg-gray-700 p-6 rounded-xl">
-
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-4">
             Lessons in:{" "}
             <span className="text-orange-500">
               {course.modules[selectedModule].title}
@@ -146,12 +163,12 @@ export default function ModuleBuilder({ courseId }) {
           </h3>
 
           {/* Existing Lessons */}
-          {course.modules[selectedModule].lessons.map((les, i) => (
+          {course.modules[selectedModule].lessons.map((lesson, i) => (
             <div
               key={i}
               className="bg-gray-200 dark:bg-gray-600 p-3 rounded-lg flex justify-between items-center mb-2"
             >
-              <span>{les.title}</span>
+              <span>{lesson.title}</span>
               <button
                 onClick={() => deleteLesson(i)}
                 className="text-red-400 hover:text-red-500 font-semibold"
@@ -162,7 +179,7 @@ export default function ModuleBuilder({ courseId }) {
           ))}
 
           {/* Add Lesson Form */}
-          <div className="mt-6 space-y-3">
+          <div className="mt-6 space-y-4">
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -171,9 +188,16 @@ export default function ModuleBuilder({ courseId }) {
             />
 
             <input
+              type="file"
+              accept="video/*"
+              onChange={uploadVideo}
+              className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white outline-none"
+            />
+
+            <input
               value={videoUrl}
-              onChange={(e) => setVideoUrl(e.target.value)}
-              placeholder="Video URL"
+              readOnly
+              placeholder="Uploaded Video URL"
               className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 text-black dark:text-white outline-none"
             />
 

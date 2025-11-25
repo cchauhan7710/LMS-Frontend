@@ -8,8 +8,11 @@ export default function CreateCoursePage() {
   const [level, setLevel] = useState("");
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState(null);
-
   const [modules, setModules] = useState([]);
+
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [thumbProgress, setThumbProgress] = useState(0);
+  const [creatingCourse, setCreatingCourse] = useState(false);
 
   // ADD MODULE
   const addModule = () => {
@@ -23,7 +26,7 @@ export default function CreateCoursePage() {
     setModules(updated);
   };
 
-  // VIDEO UPLOAD
+  // ⭐ VIDEO UPLOAD WITH PROGRESS
   const uploadVideo = async (e, m, l) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -31,117 +34,164 @@ export default function CreateCoursePage() {
     const formData = new FormData();
     formData.append("video", file);
 
-    const res = await axios.post("https://lms-backend-fezb.onrender.com/upload/video", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    try {
+      const res = await axios.post(
+        "https://lms-backend-fezb.onrender.com/upload/video",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: (progEvt) => {
+            const percent = Math.round(
+              (progEvt.loaded * 100) / progEvt.total
+            );
+            setUploadProgress(percent);
+          },
+        }
+      );
 
-    const updated = [...modules];
-    updated[m].lessons[l].videoUrl = res.data.url;
-    setModules(updated);
+      const updated = [...modules];
+      updated[m].lessons[l].videoUrl = res.data.url;
+      setModules(updated);
 
-    alert("Video Uploaded 👍");
+      setUploadProgress(0);
+      alert("Video Uploaded 👍");
+    } catch (error) {
+      console.error("Video Upload Error", error);
+      alert("Video upload failed ❌");
+    }
   };
 
-  // THUMBNAIL UPLOAD
+  // ⭐ THUMBNAIL UPLOAD WITH PROGRESS
   const uploadThumbnail = async () => {
     if (!thumbnail) return "";
 
     const formData = new FormData();
     formData.append("thumbnail", thumbnail);
 
-    const res = await axios.post("https://lms-backend-fezb.onrender.com/upload/image", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
+    const res = await axios.post(
+      "https://lms-backend-fezb.onrender.com/upload/image",
+      formData,
+      {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (p) => {
+          const percent = Math.round((p.loaded * 100) / p.total);
+          setThumbProgress(percent);
+        },
+      }
+    );
 
+    setThumbProgress(0);
     return res.data.url;
   };
 
-  // CREATE COURSE
+  // ⭐ CREATE COURSE
   const handleCreate = async () => {
     try {
+      setCreatingCourse(true);
+
       const thumbnailUrl = await uploadThumbnail();
 
-      const res = await axios.post("https://lms-backend-fezb.onrender.com/courses/create", {
-        title,
-        price: Number(price),
-        category,
-        level,
-        description,
-        thumbnail: thumbnailUrl,
-        modules,
-      });
+      await axios.post(
+        "https://lms-backend-fezb.onrender.com/courses/create",
+        {
+          title,
+          price: Number(price),
+          category,
+          level,
+          description,
+          thumbnail: thumbnailUrl,
+          modules,
+        }
+      );
 
-      if (res.data.success) {
-        alert("Course Created Successfully 🎉");
-        setTitle("");
-        setPrice("");
-        setCategory("");
-        setLevel("");
-        setDescription("");
-        setThumbnail(null);
-        setModules([]);
-      }
+      alert("🎉 Course Created Successfully!");
+
+      // RESET FIELDS
+      setTitle("");
+      setPrice("");
+      setCategory("");
+      setLevel("");
+      setDescription("");
+      setThumbnail(null);
+      setModules([]);
+
+      setCreatingCourse(false);
     } catch (err) {
       console.log("CREATE ERROR:", err);
-      alert("Something went wrong.");
+      alert("Something went wrong ❌");
+      setCreatingCourse(false);
     }
   };
 
   return (
-    <div className="p-10 min-h-screen bg-gray-50 dark:bg-gray-900 transition">
-      <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 px-4 sm:px-6 md:px-10 py-10 transition">
+      
+      <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 dark:text-white text-center md:text-left">
         Create New Course
       </h1>
 
       {/* BASIC INFO */}
       <div className="space-y-4 max-w-xl">
-        <input
-          className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                     dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
+        <div className="flex flex-col sm:flex-row gap-4">
+          <input
+            placeholder="Course Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="flex-1 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+                       dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+
+          <input
+            placeholder="Price"
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            className="w-full sm:w-40 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+                       dark:border-gray-700 text-gray-900 dark:text-white"
+          />
+        </div>
 
         <input
-          className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                     dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
-          placeholder="Price"
-          type="number"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-        />
-
-        <input
-          className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                     dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
           placeholder="Category"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+                     dark:border-gray-700 text-gray-900 dark:text-white"
         />
 
         <input
-          className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                     dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
-          placeholder="Level"
+          placeholder="Level (Beginner, Intermediate, Advanced)"
           value={level}
           onChange={(e) => setLevel(e.target.value)}
+          className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+                     dark:border-gray-700 text-gray-900 dark:text-white"
         />
 
         <textarea
-          className="w-full p-3 h-32 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                     dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400"
-          placeholder="Description"
+          placeholder="Course Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          className="w-full h-32 p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+                     dark:border-gray-700 text-gray-900 dark:text-white"
         />
 
+        {/* THUMBNAIL */}
         <input
           type="file"
           onChange={(e) => setThumbnail(e.target.files[0])}
           className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
                      dark:border-gray-700 text-gray-900 dark:text-white"
         />
+
+        {/* Thumbnail Upload Progress Bar */}
+        {thumbProgress > 0 && (
+          <div className="w-full bg-gray-300 rounded-lg h-3 mt-4">
+            <div
+              className="bg-purple-600 h-3 rounded-lg transition-all"
+              style={{ width: `${thumbProgress}%` }}
+            ></div>
+          </div>
+        )}
       </div>
 
       {/* MODULES */}
@@ -164,10 +214,7 @@ export default function CreateCoursePage() {
             className="border border-gray-300 dark:border-gray-700 rounded-xl p-5 
                        bg-white dark:bg-gray-800 shadow-sm"
           >
-            {/* Module Title */}
             <input
-              className="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 border border-gray-300 
-                         dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 mb-3"
               placeholder="Module Title"
               value={mod.title}
               onChange={(e) => {
@@ -175,6 +222,8 @@ export default function CreateCoursePage() {
                 updated[m].title = e.target.value;
                 setModules(updated);
               }}
+              className="w-full p-3 rounded-lg bg-gray-100 dark:bg-gray-700 border border-gray-300 
+                         dark:border-gray-600 text-gray-900 dark:text-white mb-3"
             />
 
             <button
@@ -185,7 +234,6 @@ export default function CreateCoursePage() {
               + Add Lesson
             </button>
 
-            {/* Lessons */}
             {mod.lessons.map((les, l) => (
               <div
                 key={l}
@@ -193,8 +241,6 @@ export default function CreateCoursePage() {
                            bg-gray-100 dark:bg-gray-700 mt-3"
               >
                 <input
-                  className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                             dark:border-gray-700 text-gray-900 dark:text-white placeholder-gray-400 mb-2"
                   placeholder="Lesson Title"
                   value={les.title}
                   onChange={(e) => {
@@ -202,6 +248,8 @@ export default function CreateCoursePage() {
                     updated[m].lessons[l].title = e.target.value;
                     setModules(updated);
                   }}
+                  className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+                             dark:border-gray-700 text-gray-900 dark:text-white mb-2"
                 />
 
                 <input
@@ -212,8 +260,20 @@ export default function CreateCoursePage() {
                              dark:border-gray-700 text-gray-900 dark:text-white"
                 />
 
+                {/* Video Progress */}
+                {uploadProgress > 0 && (
+                  <div className="w-full bg-gray-300 rounded-lg h-3 mt-3">
+                    <div
+                      className="bg-blue-600 h-3 rounded-lg transition-all"
+                      style={{ width: `${uploadProgress}%` }}
+                    ></div>
+                  </div>
+                )}
+
                 {les.videoUrl && (
-                  <p className="text-green-500 mt-2 text-sm font-semibold">Video Uploaded ✓</p>
+                  <p className="text-green-500 mt-2 text-sm font-semibold">
+                    Video Uploaded ✓
+                  </p>
                 )}
               </div>
             ))}
@@ -221,13 +281,20 @@ export default function CreateCoursePage() {
         ))}
       </div>
 
-      {/* SUBMIT */}
+      {/* CREATE BUTTON */}
+      {creatingCourse && (
+        <p className="mt-4 text-center text-orange-500 font-semibold">
+          Creating course… Please wait ⏳
+        </p>
+      )}
+
       <button
         onClick={handleCreate}
-        className="mt-10 px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 
-                   text-white font-bold shadow-lg"
+        disabled={creatingCourse}
+        className="mt-10 px-6 py-3 w-full sm:w-auto rounded-xl bg-green-600 hover:bg-green-700 
+                   text-white font-bold shadow-lg disabled:bg-gray-500"
       >
-        Create Course
+        {creatingCourse ? "Creating..." : "Create Course"}
       </button>
     </div>
   );

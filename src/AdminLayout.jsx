@@ -1,18 +1,21 @@
-// import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminSidebar from "./components/layouts/AdminSidebar";
 
 export default function AdminLayout({ children }) {
   return (
-    <div className="flex">
-      {/* Fixed Sidebar */}
-      <div className="w-64 h-screen fixed left-0 top-0 bg-gray-900 text-white">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
+
+      {/* SIDEBAR */}
+      {/* On mobile: absolute (overlays) */}
+      {/* On desktop: normal fixed width */}
+      <div className="md:w-64">
         <AdminSidebar />
       </div>
 
-      {/* Main content */}
-      <div className="ml-64 w-full h-screen overflow-y-auto bg-gray-100 p-6">
+      {/* MAIN CONTENT */}
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
         {children}
-      </div>
+      </main>
     </div>
   );
 }
+  
