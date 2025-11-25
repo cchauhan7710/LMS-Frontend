@@ -26,30 +26,30 @@ const LandingPage = () => {
     { url: "/banners/Banner3.jpg" },
     { url: "/banners/Banner7.jpg" },
   ];
+const testimonials = [
+  {
+    quote:
+      "This platform completely changed how I approach business growth. The strategies are practical, data-driven and easy to apply in real life.",
+    name: "Priya Sharma",
+    title: "Business Growth Consultant",
+    avatar: "https://randomuser.me/api/portraits/women/75.jpg",
+  },
+  {
+    quote:
+      "The AI in Business course helped me automate processes and make smarter decisions. It’s a must-have skill for the future.",
+    name: "Rajesh Kumar",
+    title: "AI & Automation Specialist",
+    avatar: "https://randomuser.me/api/portraits/men/82.jpg",
+  },
+  {
+    quote:
+      "Running a business comes with challenges, but this platform gave me clarity and the tools to overcome them in a structured way.",
+    name: "Anjali Mehta",
+    title: "Business Strategy Manager",
+    avatar: "https://randomuser.me/api/portraits/women/67.jpg",
+  },
+];
 
-  const testimonials = [
-    {
-      quote:
-        "This platform transformed my career. The courses are practical, up-to-date, and the instructors are true experts in their fields.",
-      name: "Priya Sharma",
-      title: "Software Engineer",
-      avatar: "https://i.pravatar.cc/150?img=1",
-    },
-    {
-      quote:
-        "I was able to level up my design skills significantly. The community support is fantastic and keeps you motivated.",
-      name: "Rajesh Kumar",
-      title: "UX/UI Designer",
-      avatar: "https://i.pravatar.cc/150?img=2",
-    },
-    {
-      quote:
-        "The growth and finance courses by Sushil Arora are pure gold. The best investment I've made in my personal development.",
-      name: "Anjali Mehta",
-      title: "Marketing Manager",
-      avatar: "https://i.pravatar.cc/150?img=3",
-    },
-  ];
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
@@ -82,10 +82,10 @@ const LandingPage = () => {
       Browse Courses
     </button>
     <button
-      onClick={() => navigate("/mylearning")}
+       onClick={() => navigate("/auth?mode=signup")}
       className="px-10 py-3 rounded-full border border-orange-600 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-gray-800 transition-all"
     >
-      Continue Learning
+      Start Learning
     </button>
   </div>
 </section>
@@ -107,21 +107,21 @@ const LandingPage = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <CategoryCard
             navigate={navigate}
-            category="Development"
+            category="AI In Business"
             icon={TvIcon}
-            description="Build modern applications."
+            description="Intelligent Business Automation , AI-Powered Business Growth"
           />
           <CategoryCard
             navigate={navigate}
-            category="Design"
+            category="Business Growth Challenges"
             icon={PaletteIcon}
-            description="Become a pro designer."
+            description="Barriers to Expansion , Challenges in Scaling"
           />
           <CategoryCard
             navigate={navigate}
             category="Growth"
             icon={BarChartIcon}
-            description="Grow your business skills."
+            description="Grow your business skills, Sustained Upward Movement"
           />
         </div>
       </section>
