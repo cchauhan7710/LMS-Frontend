@@ -44,7 +44,7 @@ const CartPage = () => {
         <div className="lg:w-2/3 w-full space-y-5">
           {cart.map((course) => (
             <div
-              key={course._id}  {/* ✅ FIXED unique key */}
+              key={course._id}
               className="bg-white dark:bg-gray-800 p-5 rounded-2xl shadow-md hover:shadow-lg border border-gray-100 dark:border-gray-700 flex items-center gap-5 transition-all duration-300"
             >
               {/* Thumbnail Placeholder */}
@@ -69,8 +69,10 @@ const CartPage = () => {
                 <p className="font-bold text-lg text-orange-600 dark:text-orange-400">
                   ₹{course.price.toFixed(2)}
                 </p>
+
+                {/* REMOVE BUTTON FIXED */}
                 <button
-                  onClick={() => removeFromCart(course._id)}  {/* ✅ FIXED remove id */}
+                  onClick={() => removeFromCart(course._id)}
                   className="text-red-500 hover:text-red-700 dark:hover:text-red-400 mt-2 text-sm flex items-center gap-1 transition-colors"
                 >
                   <Trash2Icon className="w-5 h-5" />
