@@ -6,6 +6,7 @@ import {
   UsersIcon, 
   TrendingUpIcon 
 } from '../components/icons/IconLibrary';
+import { useNavigate } from "react-router-dom"; // ⭐ Added — Required for navigation
 
 const PageHeader = ({ title, subtitle, handleBack, showBackButton }) => (
   <div className="bg-gradient-to-b from-orange-50 to-white dark:from-gray-800 dark:to-gray-900 border-b border-gray-200 dark:border-gray-700 py-16">
@@ -47,7 +48,9 @@ const FeatureDetail = ({ icon: Icon, title, children, iconBgColor }) => (
   </div>
 );
 
-const WhyChooseUsPage = ({ navigate, handleBack, history }) => {
+const WhyChooseUsPage = ({ handleBack, history }) => {
+  const navigate = useNavigate(); // ⭐ Added — This fixes the error
+
   return (
     <div className="bg-gray-50 dark:bg-gray-900">
       <PageHeader
@@ -59,6 +62,7 @@ const WhyChooseUsPage = ({ navigate, handleBack, history }) => {
 
       <div className="p-8 md:p-12">
         <div className="max-w-4xl mx-auto space-y-16">
+
           <FeatureDetail icon={AwardIcon} title="Expert-Led Instruction" iconBgColor="bg-orange-500">
             <p>
               Learn directly from industry veterans and renowned experts like <b>Sushil Arora</b>. 
@@ -109,7 +113,7 @@ const WhyChooseUsPage = ({ navigate, handleBack, history }) => {
             Explore our course catalog and find the perfect program to help you achieve your goals.
           </p>
           <button
-            onClick={() => navigate('courses')}
+            onClick={() => navigate("/courses")} // ⭐ Works now, error solved
             className="
               bg-orange-600 text-white font-semibold py-3 px-10 rounded-xl 
               shadow-lg hover:shadow-xl hover:bg-orange-700 

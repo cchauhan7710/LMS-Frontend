@@ -120,7 +120,7 @@ const CourseCard = ({ course, onAddToCart, onBuyNow }) => {
               "
               onClick={() => onBuyNow(course)}
             >
-              Buy Now
+              Enroll Now
             </button>
 
             <button

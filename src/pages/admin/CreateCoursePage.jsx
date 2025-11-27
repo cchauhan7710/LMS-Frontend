@@ -253,12 +253,14 @@ export default function CreateCoursePage() {
                 />
 
                 <input
-                  type="file"
-                  accept="video/*"
-                  onChange={(e) => uploadVideo(e, m, l)}
-                  className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
-                             dark:border-gray-700 text-gray-900 dark:text-white"
-                />
+  type="file"
+  accept="video/*,.mkv,.mov,.avi,.wmv,.flv,.mpeg,.mp4"
+  onChange={(e) => uploadVideo(e, m, l)}
+  className="w-full p-3 rounded-lg bg-white dark:bg-gray-800 border border-gray-300 
+             dark:border-gray-700 text-gray-900 dark:text-white"
+  style={{ maxWidth: "100%" }}
+/>
+
 
                 {/* Video Progress */}
                 {uploadProgress > 0 && (
